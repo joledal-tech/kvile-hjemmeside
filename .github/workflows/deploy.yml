@@ -25,8 +25,11 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+      
+      # HER ER ENDRINGEN: Vi bruker 'npm install' i stedet for 'ci'
       - name: Install dependencies
-        run: npm ci
+        run: npm install
+        
       - name: Build
         run: npm run build
       - name: Upload artifact
