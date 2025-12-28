@@ -5,7 +5,7 @@ import PlotModal from './components/PlotModal.tsx';
 import AIAssistant from './components/AIAssistant.tsx';
 import { Plot } from './types.ts';
 import { CABIN_TYPES } from './constants.ts';
-import { ASSETS } from './assets/index.ts'; // Updated import path
+import { ASSETS } from './assets/index.ts';
 
 const App: React.FC = () => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);

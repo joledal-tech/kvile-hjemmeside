@@ -1,5 +1,5 @@
 import { Plot, CabinType } from './types.ts';
-import { ASSETS } from './assets/index.ts'; // Import from new assets folder
+import { ASSETS } from './assets/index.ts';
 
 export const PLOTS: Plot[] = Array.from({ length: 34 }, (_, i) => {
   const isWaterfront = i < 8;

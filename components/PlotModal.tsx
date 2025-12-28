@@ -1,6 +1,6 @@
 import React from 'react';
 import { Plot } from '../types.ts';
-import { ASSETS } from '../assets/index.ts'; // Import from centralized assets folder
+import { ASSETS } from '../assets/index.ts';
 
 interface PlotModalProps {
   plot: Plot | null;
