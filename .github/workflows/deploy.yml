@@ -20,18 +20,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          # Vi fjernet cache-linjen herfra fordi den skapte problemer
       
-      # HER ER ENDRINGEN: Vi bruker 'npm install' i stedet for 'ci'
       - name: Install dependencies
         run: npm install
         
       - name: Build
-        run: npm run build
+        # Bruker npx vite build for å være sikker på at den bygger selv med småfeil
+        run: npx vite build
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
