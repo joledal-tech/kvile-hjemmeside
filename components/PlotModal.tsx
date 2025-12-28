@@ -1,5 +1,6 @@
 import React from 'react';
 import { Plot } from '../types.ts';
+import { ASSETS } from '../assets/index.ts'; // Import from centralized assets folder
 
 interface PlotModalProps {
   plot: Plot | null;
@@ -8,8 +9,6 @@ interface PlotModalProps {
 
 const PlotModal: React.FC<PlotModalProps> = ({ plot, onClose }) => {
   if (!plot) return null;
-
-  const MODAL_FALLBACK = "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=1200";
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -24,13 +23,13 @@ const PlotModal: React.FC<PlotModalProps> = ({ plot, onClose }) => {
         
         <div className="md:w-1/2 h-72 md:h-auto bg-stone-100 relative">
           <img 
-            src="input_file_0.png" 
+            src={ASSETS.images.hero} 
             className="w-full h-full object-cover" 
             alt="Utsikt fra tomten" 
             onError={(e) => {
               const target = e.currentTarget;
-              if (target.src !== MODAL_FALLBACK) {
-                target.src = MODAL_FALLBACK;
+              if (target.src !== ASSETS.images.fallbacks.hero) {
+                target.src = ASSETS.images.fallbacks.hero;
               }
             }}
           />

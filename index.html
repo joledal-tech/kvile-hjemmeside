@@ -37,6 +37,22 @@
       .animate-reveal {
         animation: reveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
       }
+      
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+      }
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes slowZoom {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.15); }
+      }
+      .animate-slow-zoom {
+        animation: slowZoom 20s ease-in-out infinite alternate;
+      }
     </style>
     <script type="importmap">
 {

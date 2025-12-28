@@ -1,20 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header.tsx';
 import PlotMap from './components/PlotMap.tsx';
 import PlotModal from './components/PlotModal.tsx';
 import AIAssistant from './components/AIAssistant.tsx';
 import { Plot } from './types.ts';
 import { CABIN_TYPES } from './constants.ts';
+import { ASSETS } from './assets/index.ts'; // Updated import path
 
 const App: React.FC = () => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
+  const [currentMoodImage, setCurrentMoodImage] = useState(0);
+
+  // Use the centralized gallery from assets folder
+  const MOOD_IMAGES = ASSETS.images.gallery;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentMoodImage((prev) => (prev + 1) % MOOD_IMAGES.length);
+    }, 5000); 
+    return () => clearInterval(timer);
+  }, [MOOD_IMAGES.length]);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Improved fallback logic - simple and clean
   const onImageError = (e: React.SyntheticEvent<HTMLImageElement>, fallbackUrl: string) => {
     const target = e.currentTarget;
     if (target.src !== fallbackUrl) {
@@ -22,24 +33,20 @@ const App: React.FC = () => {
     }
   };
 
-  const HERO_FALLBACK = "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560";
-  const ABOUT_FALLBACK = "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2000";
-  const DETAIL_FALLBACK = "https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1000";
-
   return (
     <div className="min-h-screen flex flex-col selection:bg-kvile-green selection:text-white">
       <Header />
 
       <main>
-        {/* HERO SECTION */}
+        {/* HERO SECTION - Using ASSETS.images.hero */}
         <section id="hero" className="relative h-[95vh] flex items-center justify-center overflow-hidden bg-stone-900">
           <div className="absolute inset-0 w-full h-full">
             <img 
-              src="input_file_0.png" 
+              src={ASSETS.images.hero} 
               alt="Kvile Hyttefelt ved Skjærvangen" 
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover animate-slow-zoom"
               style={{ filter: 'brightness(0.7) contrast(1.1)' }}
-              onError={(e) => onImageError(e, HERO_FALLBACK)}
+              onError={(e) => onImageError(e, ASSETS.images.fallbacks.hero)}
             />
           </div>
           <div className="absolute inset-0 hero-overlay"></div>
@@ -105,23 +112,43 @@ const App: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className="relative">
-                {/* Main section image (input_file_0.png) */}
-                <div className="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] bg-stone-50">
-                  <img 
-                    src="input_file_0.png" 
-                    className="w-full h-full object-cover" 
-                    alt="Natur ved Kvile" 
-                    onError={(e) => onImageError(e, ABOUT_FALLBACK)} 
-                  />
+              
+              <div className="relative group">
+                {/* Main Mood Slider */}
+                <div className="aspect-[4/5] rounded-[4rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] bg-stone-100 relative">
+                  {MOOD_IMAGES.map((imgSrc, index) => (
+                    <img 
+                      key={index}
+                      src={imgSrc} 
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms] ease-in-out ${
+                        index === currentMoodImage ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+                      }`}
+                      style={{ transform: index === currentMoodImage ? 'scale(1.05)' : 'scale(1.0)' }}
+                      alt={`Stemningsbilde ${index + 1}`}
+                      onError={(e) => onImageError(e, ASSETS.images.fallbacks.general)} 
+                    />
+                  ))}
+                  
+                  {/* Progress dots for visual feedback */}
+                  <div className="absolute bottom-8 left-0 right-0 flex justify-center space-x-2 z-10">
+                    {MOOD_IMAGES.map((_, idx) => (
+                      <div 
+                        key={idx}
+                        className={`h-1 rounded-full transition-all duration-500 ${
+                          idx === currentMoodImage ? 'w-8 bg-white' : 'w-2 bg-white/40'
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
-                {/* Detail image (input_file_1.png - now showing the forest and lake) */}
-                <div className="absolute -bottom-16 -left-16 w-2/3 aspect-square rounded-[3rem] overflow-hidden shadow-2xl border-[20px] border-white hidden md:block bg-stone-50">
+
+                {/* Detail image with floating animation */}
+                <div className="absolute -bottom-16 -left-16 w-2/3 aspect-square rounded-[3rem] overflow-hidden shadow-2xl border-[20px] border-white hidden md:block bg-stone-50 animate-float">
                   <img 
-                    src="input_file_1.png" 
-                    className="w-full h-full object-cover" 
+                    src={ASSETS.images.forestDetail} 
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" 
                     alt="Vakker furuskog ved Skjærvangen" 
-                    onError={(e) => onImageError(e, DETAIL_FALLBACK)} 
+                    onError={(e) => onImageError(e, ASSETS.images.fallbacks.general)} 
                   />
                 </div>
               </div>
@@ -142,14 +169,14 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* ASSISTANT SECTION */}
+        {/* ASSISTANT SECTION - Using ASSETS.images.hero as background */}
         <section id="assistant" className="py-40 bg-stone-950 relative overflow-hidden">
            <div className="absolute inset-0 opacity-10 pointer-events-none">
             <img 
-              src="input_file_0.png" 
+              src={ASSETS.images.hero} 
               className="w-full h-full object-cover blur-3xl scale-125" 
               alt="BG" 
-              onError={(e) => onImageError(e, HERO_FALLBACK)} 
+              onError={(e) => onImageError(e, ASSETS.images.fallbacks.hero)} 
             />
           </div>
           <div className="max-w-4xl mx-auto px-6 relative z-10">

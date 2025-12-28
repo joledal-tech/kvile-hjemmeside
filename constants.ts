@@ -1,4 +1,5 @@
 import { Plot, CabinType } from './types.ts';
+import { ASSETS } from './assets/index.ts'; // Import from new assets folder
 
 export const PLOTS: Plot[] = Array.from({ length: 34 }, (_, i) => {
   const isWaterfront = i < 8;
@@ -26,7 +27,7 @@ export const CABIN_TYPES: CabinType[] = [
     size: 115,
     bedrooms: 4,
     description: 'Vår mest eksklusive modell med store glassflater som fanger lyset fra Skjærvangen gjennom hele dagen.',
-    imageUrl: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=800',
+    imageUrl: ASSETS.images.cabins.panorama,
     priceEstimate: 'fra 3.490.000,-'
   },
   {
@@ -35,7 +36,7 @@ export const CABIN_TYPES: CabinType[] = [
     size: 92,
     bedrooms: 3,
     description: 'En tidløs hytte som kombinerer lunt treverk med moderne komfort. Passer perfekt inn i terrenget.',
-    imageUrl: 'https://images.unsplash.com/photo-1542718610-a1d656d1884c?auto=format&fit=crop&q=80&w=800',
+    imageUrl: ASSETS.images.cabins.tradisjon,
     priceEstimate: 'fra 2.750.000,-'
   },
   {
@@ -44,7 +45,7 @@ export const CABIN_TYPES: CabinType[] = [
     size: 74,
     bedrooms: 2,
     description: 'Arealeffektiv og moderne hytte som krever minimalt med vedlikehold. Ideell som base for friluftsliv.',
-    imageUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800',
+    imageUrl: ASSETS.images.cabins.skogstua,
     priceEstimate: 'fra 2.190.000,-'
   }
 ];
